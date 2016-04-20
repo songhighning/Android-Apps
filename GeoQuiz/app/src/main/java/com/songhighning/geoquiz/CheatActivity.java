@@ -2,6 +2,7 @@ package com.songhighning.geoquiz;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,7 @@ public class CheatActivity extends Activity {
     private boolean mAnswerIsTrue;
 
     private TextView mAnswerTextView;
+    private TextView mApiTextView;
     private Button mShowAnswer;
 
 
@@ -60,6 +62,9 @@ public class CheatActivity extends Activity {
 
             }
         });
+
+        mApiTextView = (TextView)findViewById(R.id.ApiText);
+        mApiTextView.setText("API Level " + (Build.VERSION.SDK_INT));
 
     }
 }
