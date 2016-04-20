@@ -16,6 +16,7 @@ public class QuizActivity extends Activity {
 
     private static final String  TAG = "AlexsMessage";
     private static final String KEY_INDEX= "index";
+    private static final String KEY_CHEAT= "cheat";
     private Button mTrueButton;
     private Button mFalseButton;
     private ImageButton mNextButton;
@@ -38,7 +39,6 @@ public class QuizActivity extends Activity {
     private boolean mIsCheater;
 
     private void updateQuestion(){
-        mIsCheater = false;
         int question = mQuestionBank[mCurrentIndex].getQuestion();
         mQuestionTextView.setText(question);
     }
@@ -116,6 +116,7 @@ public class QuizActivity extends Activity {
             @Override
             public void onClick(View v){
                 Log.i(TAG, "next_button onClick");
+                mIsCheater = false;
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
                 updateQuestion();
             }
@@ -126,6 +127,7 @@ public class QuizActivity extends Activity {
             @Override
             public void onClick(View v){
                 Log.i(TAG,"previous_button onClick");
+                mIsCheater = false;
                 mCurrentIndex = (mCurrentIndex -1 + mQuestionBank.length) % mQuestionBank.length;
                 updateQuestion();
             }
@@ -134,6 +136,7 @@ public class QuizActivity extends Activity {
         //retrieve index if the index was saved
         if(savedInstanceState != null){
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX);
+            mIsCheater = savedInstanceState.getBoolean(KEY_CHEAT);
         }
 
         mCheatButton = (Button)findViewById(R.id.cheat_button);
@@ -195,6 +198,7 @@ public class QuizActivity extends Activity {
         super.onSaveInstanceState(savedInstanceState);
         Log.i(TAG, "onSaveInstanceState");
         savedInstanceState.putInt(KEY_INDEX,mCurrentIndex);
+        savedInstanceState.putBoolean(KEY_CHEAT,mIsCheater);
     }
 
     @Override

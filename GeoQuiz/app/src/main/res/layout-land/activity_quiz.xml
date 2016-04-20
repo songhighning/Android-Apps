@@ -38,6 +38,7 @@
 
 
 
+
         <ImageButton
             android:id="@+id/previous_button"
             android:layout_width="wrap_content"
