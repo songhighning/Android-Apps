@@ -5,13 +5,16 @@ import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-public class CrimeActivity extends FragmentActivity {
+public class CrimeActivity extends SingleFragmentActivity {
     protected static final String TAG = "AlexMessage";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected Fragment createFragment(){
+        return new CrimeFragment();
+    }
+   /* protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_crime);
+        setContentView(R.layout.activity_fragment);
         Log.i(TAG, "CrimeActivity onCreate");
 
         FragmentManager fm = getSupportFragmentManager();
@@ -27,7 +30,7 @@ public class CrimeActivity extends FragmentActivity {
                     .commit();  //commits the fragment
 
         }
-    }
+    }*/
 
     @Override
     protected void onPause() {

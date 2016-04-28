@@ -2,6 +2,7 @@ package com.songhighning.criminalintent;
 
 import java.util.Date;
 import java.util.UUID;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by Alex on 2016-04-20.
@@ -12,6 +13,7 @@ public class Crime {
     private String mTitle;
     private Date mDate;
     private boolean mSolved;
+
 
     public Date getDate() {
         return mDate;
