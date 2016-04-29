@@ -2,4 +2,5 @@
     <string name="app_name">HomefoodEater</string>
     <string name="action_settings">Settings</string>
     <string name="homefood_title_hint">enter a name for the maker</string>
+    <string name="homefood_title">Homefood Makers</string>
 </resources>

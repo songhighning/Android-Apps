@@ -49,11 +49,11 @@ public class HomefoodFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 //leave blank
-                if (mToast == null){
+                        if (mToast == null){
                     mToast = Toast.makeText(getActivity(),mHomefoodMaker.getShopName(), Toast.LENGTH_LONG);
                 }
-                mToast.setText("Shop name: " + mHomefoodMaker.getShopName());
-                mToast.show();
+                //mToast.setText("Shop name: " + mHomefoodMaker.getShopName());
+                //mToast.show();
             }
         });
 
