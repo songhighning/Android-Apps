@@ -44,7 +44,6 @@ public class CrimeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         mCrime = new Crime();
-        Log.i(CrimeActivity.TAG,"CrimeFragment onCreate");
 
         UUID crimeId = (UUID)getArguments().getSerializable(EXTRA_CRIME_ID);
 
@@ -55,7 +54,6 @@ public class CrimeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
         //to inflate the fragment views
-        Log.i(CrimeActivity.TAG, "CrimeFragment onCreateView");
         View v = inflater.inflate(R.layout.fragment_crime,parent,false);
 
         mTitleField = (EditText)v.findViewById(R.id.crime_title);
