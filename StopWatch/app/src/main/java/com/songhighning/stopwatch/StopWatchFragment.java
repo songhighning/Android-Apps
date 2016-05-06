@@ -1,36 +1,24 @@
 package com.songhighning.stopwatch;
 
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.Chronometer;
 
 /**
  * Created by Alex on 2016-04-28.
  */
 public class StopWatchFragment extends Fragment {
-    private Button mStartButton, mStopButton;
-    private int mFakeTime = 0;
-    private TextView mWatchView;
-    private Boolean mStopButtonPressed = false;
-    private Handler mHandler;
-
-    private final Runnable mRunnable = new Runnable() {
-        @Override
-        public void run() {
-            if (mStopButtonPressed) {
-                long seconds = (System.currentTimeMillis()) / 1000;
-                mWatchView.setText(String.format("%02d:%02d", seconds / 60, seconds % 60));
-                mHandler.postDelayed(mRunnable, 1000L);
-            }
-        }
-
-    };
+    private Button mStartStop;
+    private Button mReset;
+    private Chronometer mChronometer;
+    private boolean isRunning = false;
+    private long savedElapsedTime = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -42,33 +30,38 @@ public class StopWatchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         Log.i(StopWatchActivity.TAG,"StopWatchFragment OnCreateView");
         View v = inflater.inflate(R.layout.fragment_stop_watch,parent,false);
-        mWatchView = (TextView)v.findViewById(R.id.WatchView);
+        mChronometer = (Chronometer)v.findViewById(R.id.WatchView);
+        mStartStop = (Button)v.findViewById(R.id.StartButton);
+        mReset = (Button)v.findViewById(R.id.StopButton);
 
-        mStartButton = (Button)v.findViewById(R.id.StartButton);
-        mStartButton.setOnClickListener(new View.OnClickListener() {
+        mStartStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i(StopWatchActivity.TAG, "StopWatchFragment StartButton OnClick");
                 //something happens
-                mStopButtonPressed = false;
-                mHandler.postDelayed(mRunnable, 1000L);
+
+                if(!isRunning) {
+                    mChronometer.setBase(SystemClock.elapsedRealtime() - savedElapsedTime);
+                    mChronometer.start();
+                    isRunning = true;
+                } else {
+                    mChronometer.stop();
+                    isRunning = false;
+                    savedElapsedTime = SystemClock.elapsedRealtime() - mChronometer.getBase();
+                }
             }
         });
 
-        mStopButton = (Button)v.findViewById(R.id.StopButton);
-        mStopButton.setOnClickListener(new View.OnClickListener() {
+        mReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(StopWatchActivity.TAG,"StopWatchFragment StopButton OnClick");
+                Log.i(StopWatchActivity.TAG, "StopWatchFragment StopButton OnClick");
                 //something happens
-                mStopButtonPressed = true;
+                savedElapsedTime = 0;
+                mChronometer.setBase(SystemClock.elapsedRealtime());
             }
         });
 
-
-
-
         return v;
-
     }
 }
