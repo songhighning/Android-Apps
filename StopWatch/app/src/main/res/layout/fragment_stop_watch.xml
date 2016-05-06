@@ -8,12 +8,14 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="50dp"
         android:gravity="center"
         android:background="@color/colorDarkBlue"
-        android:text="Medium Text"
+        android:text="00:00:000"
         android:id="@+id/WatchView"
-        android:layout_weight="0.5"/>
+        android:layout_weight="0.5"
+        android:allowUndo="false"/>
 
     <LinearLayout
         android:orientation="horizontal"
