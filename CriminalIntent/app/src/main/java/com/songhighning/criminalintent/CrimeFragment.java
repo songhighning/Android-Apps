@@ -26,16 +26,22 @@ import java.util.UUID;
  * Created by Alex on 2016-04-20.
  */
 public class CrimeFragment extends Fragment {
+
     public static final String EXTRA_CRIME_ID =
             "com.songhighning.android.criminalintent.crime_id";
 
+    private static final String TAG = "AlexMessage";
     private static final String DIALOG_DATE = "date";
+
+    private static final String DIALOG_TIME = "time";
+    private static final int REQUEST_TIME = 0;
     private static final int REQUEST_DATE = 0;
 
     private Crime mCrime;
     private EditText mTitleField;
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
+    private Button mTimeButton;
 
 
     public static CrimeFragment newInstance(UUID crimeId){
@@ -59,7 +65,8 @@ public class CrimeFragment extends Fragment {
 
 
     private void updateDate(){
-        mDateButton.setText(mCrime.getDate().toString());
+        mDateButton.setText(new SimpleDateFormat("EEEE, MMMM dd, yyyy. hh:mm a")
+                .format(mCrime.getDate()));
     }
 
     @Override
@@ -93,10 +100,22 @@ public class CrimeFragment extends Fragment {
             public void onClick(View v) {
                 FragmentManager fm = getActivity()
                         .getSupportFragmentManager();
-                //DatePickerFragment dialog = new DatePickerFragment();
+
                 DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
                 dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
                 dialog.show(fm, DIALOG_DATE);
+            }
+        });
+
+        mTimeButton = (Button)v.findViewById(R.id.time_button);
+
+        mTimeButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                FragmentManager fm = getActivity()
+                        .getSupportFragmentManager();
+                TimePickerFragment dialog = TimePickerFragment.newInstance(mCrime.getDate());
+                dialog.setTargetFragment(CrimeFragment.this, REQUEST_TIME);
+                dialog.show(fm, DIALOG_TIME);
             }
         });
 
@@ -124,6 +143,14 @@ public class CrimeFragment extends Fragment {
         if(requestCode == REQUEST_DATE){
             Date date = (Date)data
                     .getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+            mCrime.setDate(date);
+            updateDate();
+        }
+
+        else if (requestCode == REQUEST_TIME){
+            Log.i(TAG," CrimeFragment onActivityResult Time_RE");
+            Date date = (Date)data
+                    .getSerializableExtra(TimePickerFragment.EXTRA_TIME);
             mCrime.setDate(date);
             updateDate();
         }
