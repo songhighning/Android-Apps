@@ -39,6 +39,18 @@
             android:layout_height="wrap_content"
             android:text = "@string/crime_solved_label"
             android:layout_weight="1"/>
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_weight=".1"
+            android:text="Time Button"
+            android:id="@+id/time_button"/>
+
+
     </LinearLayout>
+
 
 </LinearLayout>
