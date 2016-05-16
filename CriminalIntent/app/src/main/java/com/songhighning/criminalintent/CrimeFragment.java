@@ -1,10 +1,13 @@
 package com.songhighning.criminalintent;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.preference.DialogPreference;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -96,28 +99,52 @@ public class CrimeFragment extends Fragment {
         mDateButton = (Button)v.findViewById(R.id.crime_date);
         updateDate();
 
-        mDateButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
-                FragmentManager fm = getActivity()
-                        .getSupportFragmentManager();
 
-                DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
-                dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
-                dialog.show(fm, DIALOG_DATE);
+        mDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+
+                
             }
         });
 
         mTimeButton = (Button)v.findViewById(R.id.time_button);
 
-        mTimeButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                FragmentManager fm = getActivity()
-                        .getSupportFragmentManager();
-                TimePickerFragment dialog = TimePickerFragment.newInstance(mCrime.getDate());
-                dialog.setTargetFragment(CrimeFragment.this, REQUEST_TIME);
-                dialog.show(fm, DIALOG_TIME);
+
+        // Dialog for user to pick to change Time or Date
+        final String[] date_or_time = getResources().getStringArray(R.array.pick_date_time);
+        mDateButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                FragmentManager fmMaster = getActivity().getSupportFragmentManager();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(R.string.date_time_Picker)
+                        .setItems(R.array.pick_date_time, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                if(date_or_time[which] == "Date"){
+                                    FragmentManager fm = getActivity()
+                                            .getSupportFragmentManager();
+
+                                    DatePickerFragment dialogDate = DatePickerFragment.newInstance(mCrime.getDate());
+                                    dialogDate.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
+                                    dialogDate.show(fm, DIALOG_DATE);
+                                }
+
+                                else{
+                                    FragmentManager fm = getActivity()
+                                            .getSupportFragmentManager();
+                                    TimePickerFragment dialogTime = TimePickerFragment.newInstance(mCrime.getDate());
+                                    dialogTime.setTargetFragment(CrimeFragment.this, REQUEST_TIME);
+                                    dialogTime.show(fm, DIALOG_TIME);
+                                }
+                            }
+                        });
+                builder.create();
+                builder.show();
             }
         });
+
+
 
 
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="pick_date_time">
-        <item>Date</item>
-        <item>Time</item>
+        <item name = "Date">Date</item>
+        <item name = "Time">Time</item>
     </array>
 </resources>
