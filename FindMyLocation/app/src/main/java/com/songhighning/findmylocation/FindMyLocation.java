@@ -1,6 +1,7 @@
 package com.songhighning.findmylocation;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -9,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -19,8 +21,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
+
 public class FindMyLocation extends FragmentActivity implements OnMapReadyCallback {
 
+    private static final String TAG = "AlexsMessage";
     private GoogleApiClient mGoogleApiClient;
     private GoogleMap mMap;
     private int MY_LOCATION_PERMISSION_REQUEST = 0;
@@ -29,6 +34,9 @@ public class FindMyLocation extends FragmentActivity implements OnMapReadyCallba
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Intent gpsOptionsIntent = new Intent(
+                android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        startActivity(gpsOptionsIntent);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_my_location);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -46,11 +54,15 @@ public class FindMyLocation extends FragmentActivity implements OnMapReadyCallba
 
 
         mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 10F, new LocationListener() {
+        String bestProvider = getLastKnownLocationProvider();
+        mLocationManager.requestLocationUpdates(bestProvider, 0, 10F, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 longitude = location.getLongitude();
                 latitude = location.getLatitude();
+                LatLng currentLocation = new LatLng(longitude, latitude);
+                mMap.addMarker(new MarkerOptions().position(currentLocation).title("Marker in currentLocation"));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
             }
 
             @Override
@@ -68,7 +80,7 @@ public class FindMyLocation extends FragmentActivity implements OnMapReadyCallba
 
             }
         });
-        Location lastKnownLocation =  mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location lastKnownLocation =  mLocationManager.getLastKnownLocation(bestProvider);
         if(lastKnownLocation != null){
             longitude = lastKnownLocation.getLongitude();
             latitude = lastKnownLocation.getLatitude();
@@ -93,7 +105,37 @@ public class FindMyLocation extends FragmentActivity implements OnMapReadyCallba
         // Add a marker in Sydney and move the camera
         LatLng currentLocation = new LatLng(longitude, latitude);
         mMap.addMarker(new MarkerOptions().position(currentLocation).title("Marker in currentLocation"));
+
         mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, mMap.getMaxZoomLevel()*0.35F));
+    }
+
+    private String getLastKnownLocationProvider() {
+        //mLocationManager = (LocationManager)getApplicationContext().getSystemService(LOCATION_SERVICE);
+        List<String> providers = mLocationManager.getProviders(true);
+        Location bestLocation = null;
+        String bestProvider = null;
+        for (String provider : providers) {
+            bestProvider = provider;
+            if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+                    PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},MY_LOCATION_PERMISSION_REQUEST);
+
+            }
+            Location l = mLocationManager.getLastKnownLocation(provider);
+            if (l == null) {
+                Log.i(TAG, " provider is:   " + provider + ". Location is null");
+                continue;
+            }
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                // Found best last known location: %s", l);
+                Log.i(TAG, " Found best Location");
+                bestLocation = l;
+
+
+            }
+        }
+        return bestProvider;
     }
 }
