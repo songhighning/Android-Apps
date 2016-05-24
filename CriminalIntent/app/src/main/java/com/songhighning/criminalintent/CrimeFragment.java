@@ -44,7 +44,7 @@ public class CrimeFragment extends Fragment {
     private EditText mTitleField;
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
-    private Button mTimeButton;
+    //private Button mTimeButton;
 
 
     public static CrimeFragment newInstance(UUID crimeId){
@@ -100,28 +100,25 @@ public class CrimeFragment extends Fragment {
         updateDate();
 
 
-        mDateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-
-                
-            }
-        });
-
-        mTimeButton = (Button)v.findViewById(R.id.time_button);
+        //mTimeButton = (Button)v.findViewById(R.id.time_button);
 
 
         // Dialog for user to pick to change Time or Date
         final String[] date_or_time = getResources().getStringArray(R.array.pick_date_time);
         mDateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                FragmentManager fmMaster = getActivity().getSupportFragmentManager();
+                //FragmentManager fmMaster = getActivity().getSupportFragmentManager();
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(R.string.date_time_Picker)
                         .setItems(R.array.pick_date_time, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                if(date_or_time[which] == "Date"){
+                                Log.i(TAG, "the which is " + which);
+                                Log.i(TAG, "the Date_or_time 0 is " + date_or_time[0] +"&");
+                                Log.i(TAG, "the Date_or_time 1 is " + date_or_time[1]+"&");
+                                Log.i(TAG, "the picked item is " + date_or_time[which]);
+
+                                if(date_or_time[which].equals("Date")){
+                                    Log.i(TAG, " Date selected");
                                     FragmentManager fm = getActivity()
                                             .getSupportFragmentManager();
 
@@ -131,6 +128,7 @@ public class CrimeFragment extends Fragment {
                                 }
 
                                 else{
+                                    Log.i(TAG," Time selected");
                                     FragmentManager fm = getActivity()
                                             .getSupportFragmentManager();
                                     TimePickerFragment dialogTime = TimePickerFragment.newInstance(mCrime.getDate());
