@@ -62,25 +62,26 @@ public class HelloMoonFragment extends Fragment {
                 mPlayer.stop();
             }
         });
-        seekBarUpdate();
+        audioFinishedUpdate();
         return v;
     }
 
 
 
     public void seekBarUpdate(){
-        Log.i(HelloMoonActivity.TAG," seekBarUpdate" );
+        //Log.i(HelloMoonActivity.TAG," seekBarUpdate" );
         mSeekBar.setProgress(mPlayer.getCurrentPosition());
-        seekHandler.postDelayed(run,1000);
+        //seekHandler.postDelayed(run,1000);
     }
 
     public void audioFinishedUpdate(){
-        Log.i(HelloMoonActivity.TAG," aduioFinishedUpdate" );
+        //Log.i(HelloMoonActivity.TAG," aduioFinishedUpdate" );
         if(mPlayer.isPlayerStopped()){
 
                 mPlayButton.setText(R.string.hellomoon_play);
                 mplaying = false;
          }
+        seekBarUpdate();
         seekHandler.postDelayed(run,1000);
     }
 

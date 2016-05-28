@@ -32,7 +32,13 @@ public class AudioPlayer {
         return mPlayer == null;
     }
 
+    public void seekTo(Context c, int adjustedPosition){
+        if(mPlayer == null){
+            mPlayer = MediaPlayer.create(c, R.raw.one_small_step);
+        }
 
+        mPlayer.seekTo(adjustedPosition);
+    }
 
 
 
@@ -41,10 +47,11 @@ public class AudioPlayer {
         if(mPlayer == null){
              mPlayer = MediaPlayer.create(c, R.raw.one_small_step);
 
-             mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener(){
-             public void onCompletion(MediaPlayer mp) {
-                 stop();
-             }});
+             mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                 public void onCompletion(MediaPlayer mp) {
+                     stop();
+                 }
+             });
             mPlayer.start();
         }
 
