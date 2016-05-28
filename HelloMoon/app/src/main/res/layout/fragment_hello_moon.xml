@@ -11,6 +11,17 @@
         android:scaleType="centerInside"
         android:layout_weight="1">
     </ImageView>
+    <FrameLayout
+        android:gravity="center|bottom"
+        android:layout_weight="0"
+        >
+        <SeekBar
+            android:id = "@+id/hellomoon_seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"></SeekBar>
+
+    </FrameLayout>
 
     <TableRow
         android:gravity="center|bottom"

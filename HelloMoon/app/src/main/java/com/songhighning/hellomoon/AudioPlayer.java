@@ -16,18 +16,43 @@ public class AudioPlayer {
         }
     }
 
+    public int getDuration(Context c){
+        return MediaPlayer.create(c, R.raw.one_small_step).getDuration();
+    }
+
+    public int getCurrentPosition(){
+        if(mPlayer == null){
+            return 0;}
+        else{
+                return mPlayer.getCurrentPosition();
+            }
+    }
+
+
+
     public void play (Context c){
         //prevents multiple instances of MediaPlayer
-        stop();
+        if(mPlayer == null){
+             mPlayer = MediaPlayer.create(c, R.raw.one_small_step);
 
-        mPlayer = MediaPlayer.create(c, R.raw.one_small_step);
-
-        mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener(){
-            public void onCompletion(MediaPlayer mp){
+             mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener(){
+             public void onCompletion(MediaPlayer mp){
                 stop();
             }
-        });
-        mPlayer.start();
+            });
+            mPlayer.start();
+        }
+
+        else{
+            if(mPlayer.isPlaying()){
+                mPlayer.pause();
+            }
+
+            else{
+                mPlayer.start();
+            }
+
+        }
     }
 
 }
