@@ -25,7 +25,8 @@ public class HelloMoonFragment extends Fragment {
     Runnable run= new Runnable() {
         @Override
         public void run() {
-            seekBarUpdate();
+            //seekBarUpdate();
+            audioFinishedUpdate();
         }
     };
 
@@ -68,7 +69,18 @@ public class HelloMoonFragment extends Fragment {
 
 
     public void seekBarUpdate(){
+        Log.i(HelloMoonActivity.TAG," seekBarUpdate" );
         mSeekBar.setProgress(mPlayer.getCurrentPosition());
+        seekHandler.postDelayed(run,1000);
+    }
+
+    public void audioFinishedUpdate(){
+        Log.i(HelloMoonActivity.TAG," aduioFinishedUpdate" );
+        if(mPlayer.isPlayerStopped()){
+
+                mPlayButton.setText(R.string.hellomoon_play);
+                mplaying = false;
+         }
         seekHandler.postDelayed(run,1000);
     }
 

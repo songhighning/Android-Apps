@@ -28,6 +28,12 @@ public class AudioPlayer {
             }
     }
 
+    public boolean isPlayerStopped(){
+        return mPlayer == null;
+    }
+
+
+
 
 
     public void play (Context c){
@@ -36,10 +42,9 @@ public class AudioPlayer {
              mPlayer = MediaPlayer.create(c, R.raw.one_small_step);
 
              mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener(){
-             public void onCompletion(MediaPlayer mp){
-                stop();
-            }
-            });
+             public void onCompletion(MediaPlayer mp) {
+                 stop();
+             }});
             mPlayer.start();
         }
 
