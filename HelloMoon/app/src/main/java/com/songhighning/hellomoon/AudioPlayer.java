@@ -38,6 +38,7 @@ public class AudioPlayer {
         }
 
         mPlayer.seekTo(adjustedPosition);
+        //mPlayer.start();
     }
 
 

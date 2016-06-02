@@ -25,7 +25,6 @@ public class HelloMoonFragment extends Fragment {
     Runnable run= new Runnable() {
         @Override
         public void run() {
-            //seekBarUpdate();
             audioFinishedUpdate();
         }
     };
@@ -39,20 +38,36 @@ public class HelloMoonFragment extends Fragment {
         mSeekBar = (SeekBar)v.findViewById(R.id.hellomoon_seekbar);
         mSeekBar.setMax(mPlayer.getDuration(getActivity()));
 
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(fromUser){
+                    Log.i(HelloMoonActivity.TAG," seekTo " + progress);
+                    mPlayer.seekTo(getActivity(),progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
 
         mPlayButton = (Button)v.findViewById(R.id.hellomoon_playButton);
+        updatePlayButton();
         mPlayButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 mPlayer.play(getActivity());
-                if(mplaying){
-                    mPlayButton.setText(R.string.hellomoon_play);
-                    mplaying = !mplaying;
-                }
+                mplaying = !mplaying;
+                updatePlayButton();
 
-                else{
-                    mPlayButton.setText(R.string.hellomoon_pause);
-                    mplaying = !mplaying;
-                }
+
             }
         });
 
@@ -77,17 +92,37 @@ public class HelloMoonFragment extends Fragment {
     public void audioFinishedUpdate(){
         //Log.i(HelloMoonActivity.TAG," aduioFinishedUpdate" );
         if(mPlayer.isPlayerStopped()){
-
+                //Log.i(HelloMoonActivity.TAG, " changiing playButton to "+R.string.hellomoon_play);
                 mPlayButton.setText(R.string.hellomoon_play);
                 mplaying = false;
          }
         seekBarUpdate();
-        seekHandler.postDelayed(run,1000);
+        seekHandler.postDelayed(run, 1000);
     }
+
+    private void updatePlayButton(){
+        if(!mplaying){
+            Log.i(HelloMoonActivity.TAG, " changiing playButton to " + R.string.hellomoon_play);
+            mPlayButton.setText(R.string.hellomoon_play);
+        }
+
+        else{
+            Log.i(HelloMoonActivity.TAG, " changiing playButton to " + R.string.hellomoon_pause);
+            mPlayButton.setText(R.string.hellomoon_pause);
+        }
+    }
+
+
 
     @Override
     public void onDestroy(){
         super.onDestroy();
         mPlayer.stop();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 }
