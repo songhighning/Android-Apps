@@ -21,12 +21,12 @@ public class CrimeLab {
         mAppContext = appContext;
         mCrimes = new ArrayList<Crime>();
         //generate 100 boring crimes
-        for (int i = 0; i < 100;i++){
+        /*for (int i = 0; i < 100;i++){
             Crime c = new Crime();
             c.setTitle("Crime #" + i);
             c.setSolved(i%2 ==0);
             mCrimes.add(c);
-        }
+        }*/
 
     }
 
@@ -35,6 +35,10 @@ public class CrimeLab {
             sCrimelab = new CrimeLab(c.getApplicationContext());
         }
         return sCrimelab;
+    }
+
+    public void addCrime(Crime c){
+        mCrimes.add(c);
     }
 
     public ArrayList<Crime> getCrimes(){
