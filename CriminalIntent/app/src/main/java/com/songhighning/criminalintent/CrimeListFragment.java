@@ -55,14 +55,12 @@ public class CrimeListFragment extends ListFragment {
         //Start CrimePagerActivity
         Intent i = new Intent (getActivity(),CrimePagerActivity.class);
         i.putExtra(CrimeFragment.EXTRA_CRIME_ID, c.getId());
-        startActivityForResult(i, REQUEST_CRIME);
+        startActivityForResult(i, 0);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
-        if (requestCode == REQUEST_CRIME){
-            //HANDLE result
-        }
+        ((CrimeAdapter)getListAdapter()).notifyDataSetChanged();
     }
 
     public void returnResult(){

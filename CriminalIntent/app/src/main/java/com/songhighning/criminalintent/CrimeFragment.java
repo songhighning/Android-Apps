@@ -72,6 +72,7 @@ public class CrimeFragment extends Fragment {
                 .format(mCrime.getDate()));
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
         //to inflate the fragment views
