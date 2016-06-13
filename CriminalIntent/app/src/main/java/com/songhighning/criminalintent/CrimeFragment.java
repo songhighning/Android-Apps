@@ -9,11 +9,14 @@ import android.preference.DialogPreference;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -66,6 +69,8 @@ public class CrimeFragment extends Fragment {
         UUID crimeId = (UUID)getArguments().getSerializable(EXTRA_CRIME_ID);
 
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
+
+        setHasOptionsMenu(true);
     }
 
 
@@ -80,10 +85,13 @@ public class CrimeFragment extends Fragment {
         //to inflate the fragment views
         View v = inflater.inflate(R.layout.fragment_crime,parent,false);
 
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
-            Log.i(TAG, " setDisplayHomeAsUpEnabled");
-            getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
-        }*/
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+            if(((AppCompatActivity)getActivity()).getSupportActionBar() != null){
+                if(NavUtils.getParentActivityName(getActivity())!=null) {
+                    ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                }
+            }
+        }
 
         mTitleField = (EditText)v.findViewById(R.id.crime_title);
         mTitleField.setText(mCrime.getTitle());
@@ -186,6 +194,19 @@ public class CrimeFragment extends Fragment {
                     .getSerializableExtra(TimePickerFragment.EXTRA_TIME);
             mCrime.setDate(date);
             updateDate();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case android.R.id.home:
+                if(NavUtils.getParentActivityName(getActivity())!=null){
+                    NavUtils.navigateUpFromSameTask(getActivity());
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
