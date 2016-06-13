@@ -1,8 +1,10 @@
 package com.songhighning.criminalintent;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.preference.DialogPreference;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
@@ -72,11 +74,16 @@ public class CrimeFragment extends Fragment {
                 .format(mCrime.getDate()));
     }
 
-
+    @TargetApi(11)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
         //to inflate the fragment views
         View v = inflater.inflate(R.layout.fragment_crime,parent,false);
+
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+            Log.i(TAG, " setDisplayHomeAsUpEnabled");
+            getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+        }*/
 
         mTitleField = (EditText)v.findViewById(R.id.crime_title);
         mTitleField.setText(mCrime.getTitle());
