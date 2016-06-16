@@ -1,10 +1,14 @@
 package com.songhighning.criminalintent;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,6 +30,7 @@ public class CrimeListFragment extends ListFragment {
     private static final String TAG = "AlexMessage";
     private ArrayList<Crime> mCrimes;
     private static final int REQUEST_CRIME = 1;
+    private boolean mSubtitleVisible = false   ;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -43,6 +48,7 @@ public class CrimeListFragment extends ListFragment {
         // used to set the adapter of the implicit ListView managed by CrimeListFragment
         CrimeAdapter adapter = new CrimeAdapter(mCrimes);
         setListAdapter(adapter);
+        setRetainInstance(true);
     }
 
     @Override
@@ -109,8 +115,14 @@ public class CrimeListFragment extends ListFragment {
         Log.i(TAG, " onCreateOptionsMenu");
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_crime_list,menu);
+
+        MenuItem showSubtitle = menu.findItem(R.id.menu_item_show_subtitle);
+        if(mSubtitleVisible&& showSubtitle!= null){
+            showSubtitle.setTitle(R.string.hide_subtitle);
+        }
     }
 
+    @TargetApi(11)
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){
@@ -121,9 +133,40 @@ public class CrimeListFragment extends ListFragment {
                 i.putExtra(CrimeFragment.EXTRA_CRIME_ID, crime.getId());
                 startActivityForResult(i, REQUEST_CRIME);
                 return true;
+
+            case R.id.menu_item_show_subtitle:
+                if(((AppCompatActivity) getActivity()).getSupportActionBar().getSubtitle() ==null) {
+                    ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle(R.string.subtitle);
+                    mSubtitleVisible = true;
+                    item.setTitle(R.string.hide_subtitle);
+
+                }
+                else {
+                    ((AppCompatActivity)getActivity()).getSupportActionBar().setSubtitle(null);
+                    mSubtitleVisible = false;
+                    item.setTitle(R.string.show_subtitle);
+                }
+
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    @TargetApi(11)
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent,
+                             Bundle savedInstanceState){
+        View v = super.onCreateView(inflater, parent, savedInstanceState);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+            if(mSubtitleVisible){
+                ((AppCompatActivity)getActivity()).getSupportActionBar().setSubtitle(R.string.subtitle);
+            }
+        }
+
+        return v;
     }
 }
