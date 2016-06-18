@@ -1,5 +1,8 @@
 package com.songhighning.criminalintent;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Date;
 import java.util.UUID;
 import java.text.SimpleDateFormat;
@@ -8,6 +11,10 @@ import java.text.SimpleDateFormat;
  * Created by Alex on 2016-04-20.
  */
 public class Crime {
+    private static final String JSON_ID = "id";
+    private static final String JSON_TITLE = "title";
+    private static final String JSON_DATE = "date";
+    private static final String JSON_SOLVED = "solved";
 
     private UUID mId;
     private String mTitle;
@@ -47,6 +54,15 @@ public class Crime {
 
     public void setTitle(String title) {
         mTitle = title;
+    }
+
+    public JSONObject toJSON() throws JSONException{
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(JSON_ID, mId.toString());
+        jsonObject.put(JSON_TITLE, mTitle);
+        jsonObject.put(JSON_SOLVED,mSolved);
+        jsonObject.put(JSON_DATE, getDate().getTime());
+        return jsonObject;
     }
 
     @Override
