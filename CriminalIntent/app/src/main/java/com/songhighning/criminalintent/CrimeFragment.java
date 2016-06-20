@@ -213,6 +213,7 @@ public class CrimeFragment extends Fragment {
     @Override
     public void onPause(){
         super.onPause();
+        Log.i(TAG, " CrimeFragment onPause");
         CrimeLab.get(getContext()).saveCrimes();
     }
 }

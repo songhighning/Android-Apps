@@ -65,6 +65,15 @@ public class Crime {
         return jsonObject;
     }
 
+    public Crime(JSONObject jsonObject) throws JSONException{
+        mId = UUID.fromString(jsonObject.getString(JSON_ID));
+        if(jsonObject.has(JSON_TITLE)){
+            mTitle = jsonObject.getString(JSON_TITLE);
+        }
+        mSolved = jsonObject.getBoolean(JSON_SOLVED);
+        mDate = new Date(jsonObject.getLong(JSON_DATE));
+    }
+
     @Override
     public String toString(){
         return mTitle;

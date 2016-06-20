@@ -24,8 +24,15 @@ public class CrimeLab {
     //find your application's private storage and more
     private CrimeLab(Context appContext){
         mAppContext = appContext;
-        mCrimes = new ArrayList<Crime>();
+        //mCrimes = new ArrayList<Crime>();
         mSerializer = new CriminalIntentJSONSerializer(appContext,FILENAME);
+
+        try{
+            mCrimes = mSerializer.loadCrimes();
+        } catch (Exception e){
+            mCrimes = new ArrayList<>();
+            Log.e(TAG, " Error loading crimes: ", e);
+        }
 
         //generate 100 boring crimes
         /*for (int i = 0; i < 10;i++){
