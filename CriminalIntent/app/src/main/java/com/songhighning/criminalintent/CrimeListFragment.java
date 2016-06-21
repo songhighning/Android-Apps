@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -166,7 +167,15 @@ public class CrimeListFragment extends ListFragment {
                 ((AppCompatActivity)getActivity()).getSupportActionBar().setSubtitle(R.string.subtitle);
             }
         }
+        // want the context menu to appear when any list item is clicked
+        ListView listView = (ListView)v.findViewById(android.R.id.list);
+        registerForContextMenu(listView);
 
         return v;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){
+        ((AppCompatActivity)getActivity()).getMenuInflater().inflate(R.menu.crime_list_item_content,menu);
     }
 }
